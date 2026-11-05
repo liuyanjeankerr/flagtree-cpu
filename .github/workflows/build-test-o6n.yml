@@ -166,7 +166,8 @@ jobs:
       - name: Create venv (python 3.12)
         run: |
           export PATH="$HOME/.local/bin:$PATH"
-          uv venv "$HOME/ci/o6n-flagtree-venv" --python 3.12
+          # --clear：venv 目录在 $HOME 持久存在，跨 run 幂等重建
+          uv venv "$HOME/ci/o6n-flagtree-venv" --python 3.12 --clear
 
       - name: Install dependencies
         run: |
