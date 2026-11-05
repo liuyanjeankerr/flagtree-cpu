@@ -67,6 +67,10 @@ jobs:
       TRITON_CPU_BACKEND: "1"
       # 板子 12 核
       MAX_JOBS: "12"
+      # 与手动构建一致用 clang：g++ 12 的 C++ 模式不支持 _Float16，
+      # third_party/cpu/runtime/cpu_runtime.cpp 编译会失败
+      CC: /usr/bin/clang
+      CXX: /usr/bin/clang++
 
     steps:
       - name: Checkout repository
