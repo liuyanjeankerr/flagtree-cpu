@@ -215,6 +215,9 @@ jobs:
             --deselect python/test/unit/language/test_core.py::test_where
 
       # 与上游 triton-cpu CI（build-test.yml Ubuntu job）保持一致的文件清单。
+      # test_indirect_matmul 与 language core 的 test_trans_4d/test_where 同源：
+      # aarch64/LLVM 编译死循环（py-spy 钉死在 CPUBackend.make_asm，JIT 缓存
+      # 零增长），本轮实测第三个触发内核。排除待上游修复后恢复。
       - name: Run CI unit test suite
         run: |
           source "$HOME/ci/o6n-flagtree-venv/bin/activate"
@@ -236,6 +239,7 @@ jobs:
             python/test/unit/runtime/test_launch.py \
             python/test/unit/runtime/test_subproc.py \
             python/test/unit/test_debug_dump.py \
+            --deselect python/test/unit/language/test_pipeliner.py::test_indirect_matmul \
             -k "not bfloat16"
 
       # O6N 增量价值：ARM 原生支持 bf16，上游排除 bfloat16 是 x86/macOS 的历史
